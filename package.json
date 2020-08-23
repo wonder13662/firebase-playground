@@ -1,0 +1,23 @@
+{
+  "name": "firebase-javascript-project",
+  "version": "1.0.0",
+  "description": "My firebase examples",
+  "main": "index.js",
+  "dependencies": {
+    "firebase": "^7.19.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wonder13662/firebase-playground.git"
+  },
+  "author": "Wonder Jung",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/wonder13662/firebase-playground/issues"
+  },
+  "homepage": "https://github.com/wonder13662/firebase-playground#readme"
+}
