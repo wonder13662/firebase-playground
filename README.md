@@ -2,5 +2,6 @@
 My firebase examples
 
 # reference
+[firebaseui-web](https://github.com/firebase/firebaseui-web)
 [Authenticate with Firebase Using Email Link in JavaScript](https://firebase.google.com/docs/auth/web/email-link-auth)
 [Add Firebase to your JavaScript project](https://firebase.google.com/docs/web/setup)
