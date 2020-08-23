@@ -144,10 +144,100 @@ const compoundQuery2 = async() => {
   });
 }
 
-const collectionGroupQuery = async() => { // Wait for indexing
+const collectionGroupQuery = async() => {
   const querySnapshot = await db.collectionGroup('landmarks').where('type', '==', 'museum').get();
   querySnapshot.forEach((doc) => {
     console.log(doc.id, ' => ', doc.data());
   });
 }
-collectionGroupQuery();
+
+const orderAndLimitData1 = async() => {
+  const citiesRef = db.collection('cities');
+
+  const firstThreeRes = await citiesRef.orderBy('name').limit(3).get();
+  firstThreeRes.forEach((doc) => {
+    console.log(doc.id, ' => ', doc.data());
+  });
+}
+
+const orderAndLimitData2 = async() => {
+  const citiesRef = db.collection('cities');
+
+  const lastThreeRes = await citiesRef.orderBy('name', 'desc').limit(3).get();
+  lastThreeRes.forEach((doc) => {
+    console.log(doc.id, ' => ', doc.data());
+  });
+}
+
+const orderAndLimitData3 = async() => {
+  const citiesRef = db.collection('cities');
+
+  const byStateByPopRes = await citiesRef.orderBy('state').orderBy('population', 'desc').get();
+  showResult(byStateByPopRes);
+}
+
+const orderAndLimitData4 = async() => {
+  const citiesRef = db.collection('cities');
+
+  const biggestRes = await citiesRef.where('population', '>', 2500000).orderBy('population').limit(2).get();
+  showResult(biggestRes);
+}
+
+const addSimpleCursorToQuery1 = async() => {
+  const startAtRes = await db.collection('cities')
+  .orderBy('population')
+  .startAt(1000000)
+  .get();
+
+  showResult(startAtRes);
+}
+
+const addSimpleCursorToQuery2 = async() => {
+  const endAtRes = await db.collection('cities')
+  .orderBy('population')
+  .endAt(1000000)
+  .get();
+
+  showResult(endAtRes);
+}
+
+const docSnapshot1 = async() => {
+  const docRef = db.collection('cities').doc('SF');
+  const snapshot = await docRef.get();
+  const startAtSnapshot = db.collection('cities')
+    .orderBy('population')
+    .startAt(snapshot);
+
+  const querySnapshot = await startAtSnapshot.limit(10).get();
+
+  showResult(querySnapshot);
+}
+
+const paginate1 = async() => {
+  const first = db.collection('cities')
+  .orderBy('population')
+  .limit(3);
+
+  const snapshot = await first.get();
+
+  // Get the last document
+  const last = snapshot.docs[snapshot.docs.length - 1];
+
+  // Construct a new query starting at this document.
+  // Note: this will not have the desired effect if multiple
+  // cities have the exact same population value.
+  const next = db.collection('cities')
+    .orderBy('population')
+    .startAfter(last.data().population)
+    .limit(3);
+
+  showResult(await next.get());
+}
+paginate1();
+
+const showResult = (querySnapshot) => {
+  querySnapshot.forEach((doc) => {
+    console.log(doc.id, ' => ', doc.data());
+  });
+}
+
