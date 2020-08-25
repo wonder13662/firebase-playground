@@ -17,6 +17,17 @@ const signInExistingUsers = (email, password, callbackOnSuccess) => {
 }
 // signInExistingUsers('wonder13662test2@gmail.com', 'barogobaroba');
 
+const signInOut = () => {
+  signInExistingUsers('wonder13662test2@gmail.com', 'barogobaroba', () => {
+    firebase.auth().signOut().then(function() {
+      console.log('Sign-out successful.');
+    }).catch(function(error) {
+      console.log('An error happened: ',error);
+    });
+  });
+}
+signInOut();
+
 const setAuthStateObserver = () => {
   firebase.auth().onAuthStateChanged((user) => {
     if (user) {
@@ -73,4 +84,8 @@ const getUserProfile2 = () => {
       });
     }
   });
+}
+
+module.exports = {
+  signInExistingUsers
 }
